@@ -1,0 +1,7 @@
+*.pdf
+*.tgz
+.venv/
+__pycache__/
+.mypy_cache/
+houses.csv
+weights.json
