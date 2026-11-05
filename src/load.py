@@ -1,3 +1,9 @@
+"""
+CSV の読み込み
+- check_path: パスの検査
+- load: CSV を DataFrame にして返す
+"""
+
 import os
 import sys
 import pandas as pd
@@ -5,7 +11,7 @@ import pandas as pd
 
 def check_path(path: str) -> None:
     """
-    check path
+    パスを検査する (不正なら例外)
     """
     if not isinstance(path, str):
         raise ValueError("path must be a string")
@@ -19,8 +25,7 @@ def check_path(path: str) -> None:
 
 def load(path: str) -> pd.DataFrame:
     """
-    return PD_Dataflame
-    if error exit(1)
+    return CSV の DataFrame (エラーなら exit(1))
     """
     try:
         check_path(path)

@@ -1,19 +1,19 @@
-"""Basic building blocks."""
+"""
+基本部品
+- ft_dropna: NaN の除去
+- ft_count: 要素数
+- ft_sum: 合計
+- ft_min / ft_max: 最小値 / 最大値
+- ft_sqrt: 平方根
+- ft_sort: 昇順の整列
+"""
 
 from collections.abc import Sequence
 
 
 def ft_dropna(x: Sequence[float]) -> list[float]:
-    """Drop NaN values.
-
-    Formula:
-        keep v where v == v
-
-    Args:
-        x: values, may contain NaN.
-
-    Returns:
-        New list without NaN.
+    """
+    return NaN を除いたリスト (v == v の要素だけ残す)
     """
     res: list[float] = []
     for i in x:
@@ -24,16 +24,8 @@ def ft_dropna(x: Sequence[float]) -> list[float]:
 
 
 def ft_count(x: Sequence[float]) -> int:
-    """Count the items.
-
-    Formula:
-        n = Σ 1
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        n.
+    """
+    return 要素数 n = Σ 1
     """
     count: int = 0
     for i in x:
@@ -42,16 +34,8 @@ def ft_count(x: Sequence[float]) -> int:
 
 
 def ft_sum(x: Sequence[float]) -> float:
-    """Sum the values.
-
-    Formula:
-        S = Σ xᵢ
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Sum (0.0 if empty).
+    """
+    return 合計 S = Σ xᵢ
     """
     res: float = 0.0
     for i in x:
@@ -60,16 +44,8 @@ def ft_sum(x: Sequence[float]) -> float:
 
 
 def ft_min(x: Sequence[float]) -> float:
-    """Return the minimum.
-
-    Formula:
-        min = xₘ, xₘ ≤ xᵢ for all i
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Minimum.
+    """
+    return 最小値
     """
     if len(x) == 0:
         raise ValueError("ft_min: empty sequence")
@@ -82,16 +58,8 @@ def ft_min(x: Sequence[float]) -> float:
 
 
 def ft_max(x: Sequence[float]) -> float:
-    """Return the maximum.
-
-    Formula:
-        max = xₘ, xₘ ≥ xᵢ for all i
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Maximum.
+    """
+    return 最大値
     """
     if len(x) == 0:
         raise ValueError("ft_max: empty sequence")
@@ -104,16 +72,8 @@ def ft_max(x: Sequence[float]) -> float:
 
 
 def ft_sqrt(x: float) -> float:
-    """Return the square root.
-
-    Formula:
-        yₖ₊₁ = (yₖ + x / yₖ) / 2  (Newton)
-
-    Args:
-        x: number >= 0.
-
-    Returns:
-        √x.
+    """
+    return √x (ニュートン法: yₖ₊₁ = (yₖ + x / yₖ) / 2)
     """
     if x == 0:
         return 0.0
@@ -130,7 +90,9 @@ def ft_sqrt(x: float) -> float:
 
 
 def _merge(left: list[float], right: list[float]) -> list[float]:
-    """Merge two ascending lists into one."""
+    """
+    return 昇順の2つのリストを1つの昇順リストにしたもの
+    """
     res: list[float] = []
     i = 0
     j = 0
@@ -147,16 +109,8 @@ def _merge(left: list[float], right: list[float]) -> list[float]:
 
 
 def ft_sort(x: Sequence[float]) -> list[float]:
-    """Return a new ascending list (merge sort, O(n log n)).
-
-    Formula:
-        y₁ ≤ y₂ ≤ ... ≤ yₙ
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Sorted list.
+    """
+    return 昇順に並べた新しいリスト (マージソート)
     """
     if len(x) <= 1:
         return list(x)

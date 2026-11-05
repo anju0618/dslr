@@ -1,3 +1,9 @@
+"""
+数値列の統計量を表で表示する (課題の describe)
+使い方: describe.py dataset.csv [--extra]
+--extra でボーナスの統計量も出す
+"""
+
 import sys
 
 from load import load
@@ -9,7 +15,9 @@ def format_table(
         result: dict[str, dict[str, float]],
         rows: tuple[str, ...]
         ) -> str:
-    """Format the statistics as a table (one column per feature)."""
+    """
+    return 統計量の表 (特徴量ごとに1列)
+    """
     label_w = max(len(r) for r in rows)
     lines = []
     cells = {

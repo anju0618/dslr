@@ -1,56 +1,36 @@
-"""Logistic regression (one-vs-all).
-
-X is (m, n) with a leading column of 1s, y is 0/1, theta is (n,).
+"""
+ロジスティック回帰 (one-vs-all)
+X は (m, n) で先頭列は 1 / y は 0/1 / theta は (n,)
+- ft_sigmoid: シグモイド関数
+- ft_predict: 予測確率
+- ft_cost: 損失 (クロスエントロピー)
+- ft_gradient: 損失の勾配
+- ft_gradient_descent: バッチ勾配降下法
+- ft_sgd: 確率的勾配降下法
+- ft_minibatch_gd: ミニバッチ勾配降下法
 """
 
 import numpy as np
 
 
 def ft_sigmoid(z: np.ndarray) -> np.ndarray:
-    """Sigmoid function.
-
-    Formula:
-        g(z) = 1 / (1 + e^(−z))
-
-    Args:
-        z: array.
-
-    Returns:
-        Values in (0, 1).
+    """
+    return g(z) = 1 / (1 + e^(−z))
     """
     # clip to avoid overflow in exp
     return 1.0 / (1.0 + np.exp(-np.clip(z, -500, 500)))
 
 
 def ft_predict(theta: np.ndarray, X: np.ndarray) -> np.ndarray:
-    """Return P(y = 1) for each sample.
-
-    Formula:
-        h(x) = g(θᵀx)
-
-    Args:
-        theta: weights (n,).
-        X: features (m, n).
-
-    Returns:
-        Probabilities (m,).
+    """
+    return h(x) = g(θᵀx)  (y = 1 の確率)
     """
     return ft_sigmoid(X @ theta)
 
 
 def ft_cost(theta: np.ndarray, X: np.ndarray, y: np.ndarray) -> float:
-    """Return the cross-entropy loss.
-
-    Formula:
-        J(θ) = −(1/m) Σ [y·log(h) + (1 − y)·log(1 − h)]
-
-    Args:
-        theta: weights (n,).
-        X: features (m, n).
-        y: 0/1 labels (m,).
-
-    Returns:
-        Loss.
+    """
+    return J(θ) = −(1/m) Σ [y·log(h) + (1 − y)·log(1 − h)]
     """
     h = np.clip(ft_predict(theta, X), 1e-15, 1 - 1e-15)
     loss = y * np.log(h) + (1 - y) * np.log(1 - h)
@@ -58,18 +38,8 @@ def ft_cost(theta: np.ndarray, X: np.ndarray, y: np.ndarray) -> float:
 
 
 def ft_gradient(theta: np.ndarray, X: np.ndarray, y: np.ndarray) -> np.ndarray:
-    """Return the gradient of the loss.
-
-    Formula:
-        ∇J = (1/m) Xᵀ (h − y)
-
-    Args:
-        theta: weights (n,).
-        X: features (m, n).
-        y: 0/1 labels (m,).
-
-    Returns:
-        Gradient (n,).
+    """
+    return ∇J = (1/m) Xᵀ (h − y)
     """
     return X.T @ (ft_predict(theta, X) - y) / len(y)
 
@@ -81,20 +51,9 @@ def ft_gradient_descent(
         max_epochs: int = 10000,
         tol: float = 1e-9
         ) -> tuple[np.ndarray, list[float]]:
-    """Train with batch gradient descent.
-
-    Formula:
-        θ ← θ − lr · ∇J(θ)
-
-    Args:
-        X: features (m, n).
-        y: 0/1 labels (m,).
-        lr: learning rate.
-        max_epochs: max epochs.
-        tol: stop if the loss gain is below this.
-
-    Returns:
-        (theta, loss history).
+    """
+    return (theta, 損失の履歴)
+    バッチ勾配降下法: θ ← θ − lr · ∇J(θ)
     """
     theta = np.zeros(X.shape[1])
     history: list[float] = [ft_cost(theta, X, y)]
@@ -113,20 +72,9 @@ def ft_sgd(
         max_epochs: int = 100,
         seed: int = 0
         ) -> tuple[np.ndarray, list[float]]:
-    """Train with stochastic gradient descent (bonus).
-
-    Formula:
-        θ ← θ − lr · (hᵢ − yᵢ) · xᵢ
-
-    Args:
-        X: features (m, n).
-        y: 0/1 labels (m,).
-        lr: learning rate.
-        max_epochs: epochs.
-        seed: shuffle seed.
-
-    Returns:
-        (theta, loss history).
+    """
+    return (theta, 損失の履歴)
+    確率的勾配降下法: θ ← θ − lr · (hᵢ − yᵢ) · xᵢ
     """
     rng = np.random.default_rng(seed)
     theta = np.zeros(X.shape[1])
@@ -147,21 +95,9 @@ def ft_minibatch_gd(
         max_epochs: int = 100,
         seed: int = 0
         ) -> tuple[np.ndarray, list[float]]:
-    """Train with mini-batch gradient descent (bonus).
-
-    Formula:
-        θ ← θ − lr · (1/b) Σ_B (hᵢ − yᵢ) · xᵢ
-
-    Args:
-        X: features (m, n).
-        y: 0/1 labels (m,).
-        lr: learning rate.
-        batch_size: b.
-        max_epochs: epochs.
-        seed: shuffle seed.
-
-    Returns:
-        (theta, loss history).
+    """
+    return (theta, 損失の履歴)
+    ミニバッチ勾配降下法: θ ← θ − lr · (1/b) Σ_B (hᵢ − yᵢ) · xᵢ
     """
     rng = np.random.default_rng(seed)
     theta = np.zeros(X.shape[1])

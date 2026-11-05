@@ -26,6 +26,7 @@
 | `dispersion.py` | ばらつき: `ft_var`, `ft_std`, `ft_range`, `ft_iqr` |
 | `position.py` | 位置: `ft_percentile`, `ft_quartiles` |
 | `shape.py` | 形状: `ft_skewness`, `ft_kurtosis` |
+| `relation.py` | 2変数の関係: `ft_corr` |
 | `preprocessing.py` | 前処理: `ft_standardize`, `ft_normalize` |
 | `logistic.py` | ロジスティック回帰: `ft_sigmoid`, `ft_predict`, `ft_cost`, `ft_gradient`, `ft_gradient_descent`, `ft_sgd`, `ft_minibatch_gd` |
 
@@ -149,6 +150,32 @@ $g_1$, $g_2$ は母集団の式、$G_1$, $G_2$ は pandas の `skew()`, `kurt()`
 
 ---
 
+## 5.5 相関 (`relation.py`)
+
+**ピアソンの積率相関係数** `ft_corr`:
+
+$$r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}
+{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \cdot \sum_{i=1}^{n} (y_i - \bar{y})^2}}$$
+
+$x_i$, $y_i$ は同じ対象(同じ生徒など)の 2 つの測定値。$x$ と $y$ は同じ長さで、NaN を含まない。
+
+$-1 \le r \le 1$。$r = 1$ で完全な正の直線関係、$r = -1$ で完全な負の直線関係、$0$ で直線的な関係なし。
+
+分子は偏差の積の合計(共分散の $n$ 倍)。$x_i$, $y_i$ がともに平均より上、またはともに下なら
+積は正、片方だけ上なら負になる。同じ向きにずれる対象が多いほど $r$ は $1$ に近づく。
+
+分母は $x$ と $y$ のばらつき(偏差平方和)の積の平方根。これで割ると、単位や尺度に依存せず
+$[-1, 1]$ に収まる。同じことを、共分散と標準偏差で書くと次のようになる(約分で $n-1$ は消える)。
+
+$$r = \frac{s_{xy}}{s_x \, s_y}, \qquad
+s_{xy} = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$$
+
+- $\sum (x_i - \bar{x})^2 = 0$ または $\sum (y_i - \bar{y})^2 = 0$(全部同じ値)のときは分母が $0$ で定義できない。
+- 直線的な関係だけを測る。曲線状の関係は強くても $r$ が小さくなることがある。散布図で目視して確かめる。
+- 相関は因果関係を意味しない。
+
+---
+
 ## 6. 前処理 (`preprocessing.py`)
 
 学習データから求めた定数を、テストデータにもそのまま使う。
@@ -235,6 +262,7 @@ $$\hat{y} = \operatorname*{arg\,max}_{k} \; h_{\theta^{(k)}}(x)$$
 | 昇順に並べた標本 $x_{(i)}$ | [順序統計量](https://ja.wikipedia.org/wiki/%E9%A0%86%E5%BA%8F%E7%B5%B1%E8%A8%88%E9%87%8F) |
 | `ft_skewness` 歪度 | [歪度](https://ja.wikipedia.org/wiki/%E6%AD%AA%E5%BA%A6) |
 | `ft_kurtosis` 尖度 | [尖度](https://ja.wikipedia.org/wiki/%E5%B0%96%E5%BA%A6) |
+| `ft_corr` ピアソンの積率相関係数 | [ピアソンの積率相関係数](https://ja.wikipedia.org/wiki/%E3%83%94%E3%82%A2%E3%82%BD%E3%83%B3%E3%81%AE%E7%A9%8D%E7%8E%87%E7%9B%B8%E9%96%A2%E4%BF%82%E6%95%B0) |
 | `ft_sigmoid` | [シグモイド関数](https://ja.wikipedia.org/wiki/%E3%82%B7%E3%82%B0%E3%83%A2%E3%82%A4%E3%83%89%E9%96%A2%E6%95%B0) |
 | `ft_sgd` 確率的勾配降下法 | [確率的勾配降下法](https://ja.wikipedia.org/wiki/%E7%A2%BA%E7%8E%87%E7%9A%84%E5%8B%BE%E9%85%8D%E9%99%8D%E4%B8%8B%E6%B3%95) |
 | ロジスティック回帰全般 | [ロジスティック回帰](https://ja.wikipedia.org/wiki/%E3%83%AD%E3%82%B8%E3%82%B9%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E5%9B%9E%E5%B8%B0) |

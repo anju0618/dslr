@@ -1,4 +1,8 @@
-"""Shape."""
+"""
+形状
+- ft_skewness: 歪度
+- ft_kurtosis: 尖度
+"""
 
 from collections.abc import Sequence
 
@@ -7,19 +11,9 @@ from .central import ft_mean
 
 
 def ft_skewness(x: Sequence[float], bias: bool = False) -> float:
-    """Return the skewness.
-
-    Formula:
-        g₁ = m₃ / m₂^(3/2)                       (bias=True)
-        G₁ = √(n(n − 1)) / (n − 2) · g₁          (bias=False)
-
-    Args:
-        x: values without NaN (n >= 3 if bias=False).
-        bias: True for the population form g₁, False for the adjusted
-            sample form G₁ (same as pandas skew()).
-
-    Returns:
-        Skewness.
+    """
+    return 歪度 g₁ = m₃ / m₂^(3/2)
+    bias=False は小標本補正あり (pandas の skew())
     """
     n = len(x)
     if n < (1 if bias else 3):
@@ -42,19 +36,9 @@ def ft_skewness(x: Sequence[float], bias: bool = False) -> float:
 
 
 def ft_kurtosis(x: Sequence[float], bias: bool = False) -> float:
-    """Return the excess kurtosis.
-
-    Formula:
-        g₂ = m₄ / m₂² − 3                                (bias=True)
-        G₂ = (n − 1) / ((n − 2)(n − 3)) · ((n + 1)·g₂ + 6)   (bias=False)
-
-    Args:
-        x: values without NaN (n >= 4 if bias=False).
-        bias: True for the population form g₂, False for the adjusted
-            sample form G₂ (same as pandas kurt()).
-
-    Returns:
-        Excess kurtosis.
+    """
+    return 超過尖度 g₂ = m₄ / m₂² − 3
+    bias=False は小標本補正あり (pandas の kurt())
     """
     n = len(x)
     if n < (1 if bias else 4):

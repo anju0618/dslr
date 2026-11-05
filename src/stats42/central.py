@@ -1,20 +1,17 @@
-"""Central tendency."""
+"""
+代表値
+- ft_mean: 平均
+- ft_median: 中央値
+- ft_mode: 最頻値
+"""
 
 from collections.abc import Sequence
 from ._core import ft_sort
 
 
 def ft_mean(x: Sequence[float]) -> float:
-    """Return the arithmetic mean.
-
-    Formula:
-        x̄ = (1 / n) Σ xᵢ
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Mean.
+    """
+    return x̄ = (1 / n) Σ xᵢ
     """
     total = 0.0
     n = 0
@@ -27,16 +24,8 @@ def ft_mean(x: Sequence[float]) -> float:
 
 
 def ft_median(x: Sequence[float]) -> float:
-    """Return the median.
-
-    Formula:
-        middle of sorted values (P50)
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Median.
+    """
+    return 中央値 (昇順に並べた真ん中の値)
     """
     if len(x) == 0:
         raise ValueError("ft_median: empty sequence")
@@ -50,16 +39,8 @@ def ft_median(x: Sequence[float]) -> float:
 
 
 def ft_mode(x: Sequence[float]) -> float:
-    """Return the most frequent value.
-
-    Formula:
-        argmax_v Σ [xᵢ == v]
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Mode (smallest on ties).
+    """
+    return 最頻値 (同数なら最小の値)
     """
     if len(x) == 0:
         raise ValueError("ft_mode: empty sequence")

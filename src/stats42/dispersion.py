@@ -1,4 +1,10 @@
-"""Dispersion."""
+"""
+ばらつき
+- ft_var: 分散
+- ft_std: 標準偏差
+- ft_range: 範囲
+- ft_iqr: 四分位範囲
+"""
 
 from collections.abc import Sequence
 
@@ -8,17 +14,9 @@ from .position import ft_quartiles
 
 
 def ft_var(x: Sequence[float], ddof: int = 1) -> float:
-    """Return the variance.
-
-    Formula:
-        s² = Σ(xᵢ − x̄)² / (n − ddof)
-
-    Args:
-        x: values without NaN.
-        ddof: 0 population, 1 sample.
-
-    Returns:
-        Variance.
+    """
+    return s² = Σ(xᵢ − x̄)² / (n − ddof)
+    ddof=1 は標本分散 ddof=0 は母分散
     """
     m = ft_mean(x)
     ssd = 0.0
@@ -33,47 +31,22 @@ def ft_var(x: Sequence[float], ddof: int = 1) -> float:
 
 
 def ft_std(x: Sequence[float], ddof: int = 1) -> float:
-    """Return the standard deviation.
-
-    Formula:
-        s = √( Σ(xᵢ − x̄)² / (n − ddof) )
-
-    Args:
-        x: values without NaN.
-        ddof: 0 population, 1 sample.
-
-    Returns:
-        Standard deviation.
+    """
+    return s = √( Σ(xᵢ − x̄)² / (n − ddof) )
     """
     return ft_sqrt(ft_var(x, ddof))
 
 
 def ft_range(x: Sequence[float]) -> float:
-    """Return max − min.
-
-    Formula:
-        range = max − min
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        Range.
+    """
+    return max − min
     """
     return ft_max(x) - ft_min(x)
 
 
 def ft_iqr(x: Sequence[float]) -> float:
-    """Return the interquartile range.
-
-    Formula:
-        IQR = Q3 − Q1
-
-    Args:
-        x: values without NaN.
-
-    Returns:
-        IQR.
+    """
+    return IQR = Q3 − Q1
     """
     q1, _, q3 = ft_quartiles(x)
     return q3 - q1

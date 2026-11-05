@@ -1,4 +1,8 @@
-"""Preprocessing."""
+"""
+前処理
+- ft_standardize: 標準化 (z スコア)
+- ft_normalize: min-max 正規化
+"""
 
 from collections.abc import Sequence
 
@@ -8,18 +12,9 @@ def ft_standardize(
         mean: float,
         std: float
         ) -> list[float]:
-    """Standardize values (z-score).
-
-    Formula:
-        zᵢ = (xᵢ − mean) / std
-
-    Args:
-        x: values without NaN.
-        mean: mean of the train data.
-        std: std of the train data.
-
-    Returns:
-        Standardized list.
+    """
+    return zᵢ = (xᵢ − mean) / std
+    mean, std は学習データのもの
     """
     if std == 0:
         raise ValueError("ft_standardize: std must not be 0")
@@ -27,18 +22,9 @@ def ft_standardize(
 
 
 def ft_normalize(x: Sequence[float], lo: float, hi: float) -> list[float]:
-    """Scale values to [0, 1] (min-max).
-
-    Formula:
-        x'ᵢ = (xᵢ − lo) / (hi − lo)
-
-    Args:
-        x: values without NaN.
-        lo: min of the train data.
-        hi: max of the train data.
-
-    Returns:
-        Normalized list.
+    """
+    return x'ᵢ = (xᵢ − lo) / (hi − lo)
+    lo と hi は学習データの最小値と最大値
     """
     if hi == lo:
         raise ValueError("ft_normalize: hi must differ from lo")

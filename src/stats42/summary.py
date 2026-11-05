@@ -1,4 +1,7 @@
-"""Summary of numeric columns (describe)."""
+"""
+数値列の要約 (describe)
+- ft_describe: 数値列の統計量をまとめる
+"""
 
 from collections.abc import Mapping, Sequence
 
@@ -15,7 +18,9 @@ EXTRA = ("Var", "Range", "IQR", "Mode", "Skew", "Kurt", "Missing")
 
 
 def _describe_column(x: Sequence[float], extra: bool) -> dict[str, float]:
-    """Compute the statistics of one column."""
+    """
+    return 1列分の統計量 {統計量名: 値}
+    """
     y = ft_sort(ft_dropna(x))
     n = len(y)
     res: dict[str, float] = {name: NAN for name in BASIC}
@@ -51,18 +56,8 @@ def ft_describe(
         columns: Mapping[str, Sequence[float]],
         extra: bool = False
         ) -> dict[str, dict[str, float]]:
-    """Describe numeric columns.
-
-    Formula:
-        Count, Mean, Std (ddof=1), Min, Q(25), Q(50), Q(75), Max
-        extra=True adds Var, Range, IQR, Mode, Skew, Kurt, Missing
-
-    Args:
-        columns: column name -> values (NaN allowed).
-        extra: add the bonus statistics.
-
-    Returns:
-        {column name: {statistic name: value}}. Statistics that cannot be
-        computed (too few values) are NaN.
+    """
+    return {列名: {統計量名: 値}}
+    計算できない統計量は NaN
     """
     return {name: _describe_column(x, extra) for name, x in columns.items()}
