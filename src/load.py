@@ -11,7 +11,7 @@ import pandas as pd
 
 def check_path(path: str) -> None:
     """
-    パスを検査する (不正なら例外)
+    パスを検査する
     """
     if not isinstance(path, str):
         raise ValueError("path must be a string")
