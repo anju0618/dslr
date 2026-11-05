@@ -2,7 +2,9 @@
 
 from collections.abc import Sequence
 
+from ._core import ft_max, ft_min, ft_sqrt
 from .central import ft_mean
+from .position import ft_quartiles
 
 
 def ft_var(x: Sequence[float], ddof: int = 1) -> float:
@@ -18,7 +20,16 @@ def ft_var(x: Sequence[float], ddof: int = 1) -> float:
     Returns:
         Variance.
     """
-    raise NotImplementedError
+    m = ft_mean(x)
+    ssd = 0.0
+    n = 0
+
+    for v in x:
+        ssd += (v - m) ** 2
+        n += 1
+    if n <= ddof:
+        raise ValueError("ft_var: not enough values for the given ddof")
+    return float((ssd / (n - ddof)))
 
 
 def ft_std(x: Sequence[float], ddof: int = 1) -> float:
@@ -34,15 +45,7 @@ def ft_std(x: Sequence[float], ddof: int = 1) -> float:
     Returns:
         Standard deviation.
     """
-    m = ft_mean(x)
-    ssd = 0.0
-    n = 0
-    for v in x:
-        ssd += (v - m) ** 2
-        n += 1
-    if n <= ddof:
-        raise ValueError("ft_std: not enough values for the given ddof")
-    return float((ssd / (n - ddof)) ** 0.5)
+    return ft_sqrt(ft_var(x, ddof))
 
 
 def ft_range(x: Sequence[float]) -> float:
@@ -57,7 +60,7 @@ def ft_range(x: Sequence[float]) -> float:
     Returns:
         Range.
     """
-    raise NotImplementedError
+    return ft_max(x) - ft_min(x)
 
 
 def ft_iqr(x: Sequence[float]) -> float:
@@ -72,4 +75,5 @@ def ft_iqr(x: Sequence[float]) -> float:
     Returns:
         IQR.
     """
-    raise NotImplementedError
+    q1, _, q3 = ft_quartiles(x)
+    return q3 - q1

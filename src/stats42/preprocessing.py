@@ -40,4 +40,6 @@ def ft_normalize(x: Sequence[float], lo: float, hi: float) -> list[float]:
     Returns:
         Normalized list.
     """
-    raise NotImplementedError
+    if hi == lo:
+        raise ValueError("ft_normalize: hi must differ from lo")
+    return [(v - lo) / (hi - lo) for v in x]

@@ -1,6 +1,7 @@
 """Central tendency."""
 
 from collections.abc import Sequence
+from ._core import ft_sort
 
 
 def ft_mean(x: Sequence[float]) -> float:
@@ -37,7 +38,15 @@ def ft_median(x: Sequence[float]) -> float:
     Returns:
         Median.
     """
-    raise NotImplementedError
+    if len(x) == 0:
+        raise ValueError("ft_median: empty sequence")
+
+    x = ft_sort(x)
+    y = len(x)
+    if y % 2 == 0:
+        return (x[y // 2] + x[y // 2 - 1]) / 2
+    else:
+        return x[y // 2]
 
 
 def ft_mode(x: Sequence[float]) -> float:
@@ -52,4 +61,17 @@ def ft_mode(x: Sequence[float]) -> float:
     Returns:
         Mode (smallest on ties).
     """
-    raise NotImplementedError
+    if len(x) == 0:
+        raise ValueError("ft_mode: empty sequence")
+
+    counts: dict[float, int] = {}
+    for v in x:
+        counts[v] = counts.get(v, 0) + 1
+
+    res = x[0]
+    best = 0
+    for v, c in counts.items():
+        if c > best or (c == best and v < res):
+            res = v
+            best = c
+    return res
