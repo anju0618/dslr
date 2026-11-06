@@ -1,8 +1,6 @@
 # dslr — Data Science × Logistic Regression
 
 `src/stats42/` に、統計と機械学習の部品を自作してまとめています。
-この README は、各関数の公式を統計の教科書の記法で整理したものです。
-(数式は GitHub の LaTeX 表示を前提にしています)
 
 ## 記法
 
