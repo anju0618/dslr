@@ -9,25 +9,25 @@ WEIGHTS	= weights.json
 all: help
 
 help:
-	@echo "make install        依存パッケージをインストール (uv sync)"
-	@echo "make describe       $(TRAIN) の統計を表示"
-	@echo "make describe-extra ボーナスの統計も含めて表示"
-	@echo "make histogram      ヒストグラムを表示"
-	@echo "make scatter        散布図を表示"
-	@echo "make pair           ペアプロットを表示"
-	@echo "make train          $(TRAIN) で学習して $(WEIGHTS) を保存"
-	@echo "make train-sgd      確率的勾配降下法で学習"
-	@echo "make train-minibatch ミニバッチ勾配降下法で学習"
-	@echo "make predict        $(TEST) の寮を予測して houses.csv に保存"
-	@echo "make eval           $(TRAIN) の正答率を表示"
+	@echo "make install        install dependencies (uv sync)"
+	@echo "make describe       describe $(TRAIN)"
+	@echo "make describe-extra describe with the bonus statistics"
+	@echo "make histogram      show the histograms"
+	@echo "make scatter        show the scatter plot"
+	@echo "make pair           show the pair plot"
+	@echo "make train          train on $(TRAIN) and save $(WEIGHTS)"
+	@echo "make train-sgd      train with stochastic gradient descent"
+	@echo "make train-minibatch train with mini-batch gradient descent"
+	@echo "make predict        predict houses of $(TEST) into houses.csv"
+	@echo "make eval           show the accuracy on $(TRAIN)"
 	@echo "make lint           flake8"
 	@echo "make typecheck      mypy"
 	@echo "make check          lint + typecheck"
-	@echo "make clean          キャッシュを削除"
-	@echo "make fclean         clean + .venv を削除"
+	@echo "make clean          remove caches, $(WEIGHTS) and houses.csv"
+	@echo "make fclean         clean + remove .venv"
 	@echo "make re             fclean + install"
 	@echo ""
-	@echo "データセットの変更: make describe TRAIN=path/to/file.csv"
+	@echo "override the dataset: make describe TRAIN=path/to/file.csv"
 
 install:
 	uv sync
@@ -73,6 +73,7 @@ check: lint typecheck
 clean:
 	find . -name .venv -prune -o \( -name __pycache__ -o -name .mypy_cache \
 		\) -type d -prune -exec rm -rf {} +
+	rm -f $(WEIGHTS) houses.csv
 
 fclean: clean
 	rm -rf .venv
