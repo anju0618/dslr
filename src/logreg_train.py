@@ -1,15 +1,19 @@
 """
 one-vs-all のロジスティック回帰を学習して、重みを保存する
-使い方: logreg_train.py dataset_train.csv
+使い方: logreg_train.py dataset_train.csv [--algo batch|sgd|minibatch]
 """
 
-import sys
+import argparse
+import json
+from collections.abc import Callable
 
 import numpy as np
 import pandas as pd
 
 from load import load
-from stats42 import ft_dropna, ft_mean, ft_std
+from stats42 import (
+    ft_dropna, ft_gradient_descent, ft_mean, ft_minibatch_gd, ft_sgd, ft_std
+)
 
 HOUSE = "Hogwarts House"
 HOUSES = ("Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin")
@@ -22,6 +26,11 @@ FEATURES: list[str] = [
     "Muggle Studies"
 ]
 WEIGHTS_PATH = "weights.json"
+ALGOS: dict[str, Callable[..., tuple[np.ndarray, list[float]]]] = {
+    "batch": ft_gradient_descent,
+    "sgd": ft_sgd,
+    "minibatch": ft_minibatch_gd,
+}
 
 
 def compute_scaler(
@@ -49,21 +58,47 @@ def build_matrix(
     """
     return X (標準化 → NaN を 0 → 先頭に 1 の列)
     """
-    raise NotImplementedError
+    columns: list[list[float]] = [[1.0] * len(df)]
+    for feature in FEATURES:
+        lis = []
+        for score in df[feature].tolist():
+            z = (score - means[feature]) / stds[feature]
+            lis.append(0.0 if z != z else z)
+        columns.append(lis)
+
+    return np.column_stack(columns)
 
 
 def make_labels(df: pd.DataFrame, house: str) -> np.ndarray:
     """
     return y (house の生徒は 1、それ以外は 0)
     """
-    raise NotImplementedError
+    labels = []
+    for h in df[HOUSE].tolist():
+        if h == house:
+            labels.append(1.0)
+        else:
+            labels.append(0.0)
+    return np.array(labels)
 
 
-def train(X: np.ndarray, df: pd.DataFrame) -> dict[str, list[float]]:
+def train(
+        X: np.ndarray,
+        df: pd.DataFrame,
+        algo: str = "batch"
+        ) -> dict[str, list[float]]:
     """
-    return {寮名: θ}
+    return {寮名: θ}  (algo: batch / sgd / minibatch)
     """
-    raise NotImplementedError
+    thetas: dict[str, list[float]] = {}
+
+    for house in HOUSES:
+        y = make_labels(df, house)
+        theta, history = ALGOS[algo](X, y)
+        print(f"{house:11s} cost {history[0]:.4f} -> {history[-1]:.4f}")
+        thetas[house] = theta.tolist()
+
+    return thetas
 
 
 def save_weights(
@@ -75,16 +110,28 @@ def save_weights(
     """
     θ、mean、std、科目の順番を保存する
     """
-    raise NotImplementedError
+    data = {
+        "features": FEATURES,
+        "means": means,
+        "stds": stds,
+        "thetas": thetas,
+    }
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
 
 
 def main() -> None:
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} dataset_train.csv", file=sys.stderr)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description=__doc__.strip())
+    parser.add_argument("dataset", help="dataset_train.csv")
+    parser.add_argument("--algo", choices=ALGOS, default="batch")
+    args = parser.parse_args()
 
-    df = load(sys.argv[1])
-    # TODO: compute_scaler → build_matrix → train → save_weights
+    df = load(args.dataset)
+    means, stds = compute_scaler(df)
+
+    X = build_matrix(df, means, stds)
+    thetas = train(X, df, args.algo)
+    save_weights(WEIGHTS_PATH, thetas, means, stds)
 
 
 if __name__ == "__main__":

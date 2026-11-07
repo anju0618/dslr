@@ -497,6 +497,8 @@ $$\mathrm{accuracy} = \frac{\text{予測が当たった生徒の数}}{\text{生�
 | `ft_sort` マージソート | [マージソート](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88) |
 | `ft_standardize` z スコア | [標準得点](https://ja.wikipedia.org/wiki/%E6%A8%99%E6%BA%96%E5%BE%97%E7%82%B9) |
 
+[ロジスティック回帰](https://masamunetogetoge.com/classification-logisticregression)
+
 ### 教科書
 
 - 秋山裕『統計学基礎講義』第3版、慶應義塾大学出版会、2022年4月(414ページ)

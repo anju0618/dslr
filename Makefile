@@ -1,27 +1,33 @@
 PYTHON	= uv run python
 TRAIN	= datasets/dataset_train.csv
 TEST	= datasets/dataset_test.csv
+WEIGHTS	= weights.json
 
-.PHONY: all install describe describe-extra histogram scatter pair lint typecheck check \
+.PHONY: all install describe describe-extra histogram scatter pair train train-sgd train-minibatch predict eval lint typecheck check \
 	clean fclean re help
 
 all: help
 
 help:
-	@echo "make install        install dependencies (uv sync)"
-	@echo "make describe       describe $(TRAIN)"
-	@echo "make describe-extra describe with the bonus statistics"
-	@echo "make histogram      show the histograms"
-	@echo "make scatter        show the scatter plot"
-	@echo "make pair           show the pair plot"
+	@echo "make install        依存パッケージをインストール (uv sync)"
+	@echo "make describe       $(TRAIN) の統計を表示"
+	@echo "make describe-extra ボーナスの統計も含めて表示"
+	@echo "make histogram      ヒストグラムを表示"
+	@echo "make scatter        散布図を表示"
+	@echo "make pair           ペアプロットを表示"
+	@echo "make train          $(TRAIN) で学習して $(WEIGHTS) を保存"
+	@echo "make train-sgd      確率的勾配降下法で学習"
+	@echo "make train-minibatch ミニバッチ勾配降下法で学習"
+	@echo "make predict        $(TEST) の寮を予測して houses.csv に保存"
+	@echo "make eval           $(TRAIN) の正答率を表示"
 	@echo "make lint           flake8"
 	@echo "make typecheck      mypy"
 	@echo "make check          lint + typecheck"
-	@echo "make clean          remove caches"
-	@echo "make fclean         clean + remove .venv"
+	@echo "make clean          キャッシュを削除"
+	@echo "make fclean         clean + .venv を削除"
 	@echo "make re             fclean + install"
 	@echo ""
-	@echo "override the dataset: make describe TRAIN=path/to/file.csv"
+	@echo "データセットの変更: make describe TRAIN=path/to/file.csv"
 
 install:
 	uv sync
@@ -40,6 +46,21 @@ scatter:
 
 pair:
 	$(PYTHON) src/pair_plot.py $(TRAIN)
+
+train:
+	$(PYTHON) src/logreg_train.py $(TRAIN)
+
+train-sgd:
+	$(PYTHON) src/logreg_train.py $(TRAIN) --algo sgd
+
+train-minibatch:
+	$(PYTHON) src/logreg_train.py $(TRAIN) --algo minibatch
+
+predict:
+	$(PYTHON) src/logreg_predict.py $(TEST) $(WEIGHTS)
+
+eval:
+	$(PYTHON) src/evaluate.py $(TRAIN) $(WEIGHTS)
 
 lint:
 	uv run flake8 src
